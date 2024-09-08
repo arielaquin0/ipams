@@ -11,7 +11,7 @@ import { AntDesignVueResolver } from 'unplugin-vue-components/resolvers';
 export default defineConfig({
   server: {
     hmr: { overlay: false },
-    port: 8080,
+    port: 3000,
     open: true,
   },
   plugins: [

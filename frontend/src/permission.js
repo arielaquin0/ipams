@@ -1,6 +1,6 @@
 import router from '@/router'
 import settings from './settings'
-import { getToken, setToken } from '@/utils/auth'
+import { getToken } from '@/utils/auth'
 import NProgress from 'nprogress'
 NProgress.configure({ showSpinner: false })
 import 'nprogress/nprogress.css'
@@ -20,13 +20,7 @@ router.beforeEach(async (to, from, next) => {
         if (to.path === '/login') {
             next({ path: '/' })
         } else {
-            try {
-                next({ ...to, replace: true })
-            } catch (err) {
-                await userStore.resetState()
-                next(`/login?redirect=${to.path}`)
-                if (settings.isNeedNprogress) NProgress.done()
-            }
+            next()
         }
     } else {
         if (whiteList.indexOf(to.path) !== -1) {

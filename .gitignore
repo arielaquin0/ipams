@@ -50,3 +50,8 @@
 /frontend/*.sw?
 
 /frontend/*.tsbuildinfo
+
+/docker/mysql/
+/docker/redis/
+
+setup.log
