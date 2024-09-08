@@ -1,5 +1,25 @@
 <script setup>
+import { computed, ref, onMounted } from "vue";
+import { useModalStore } from "@/stores/modal";
+import bus from "@/utils/bus.js";
 import Header from "@/layout/Header.vue";
+import Modal from "@/components/Modal.vue";
+
+const primaryModal = computed(() => {
+  return useModalStore().modalData;
+})
+
+const thisModal = ref(null);
+
+onMounted(() => {
+  bus.on('openModal', () => {
+    thisModal.value.show();
+  });
+
+  bus.on('closeModal', () => {
+    thisModal.value.close();
+  });
+});
 </script>
 
 <template>
@@ -10,5 +30,7 @@ import Header from "@/layout/Header.vue";
         <router-view />
       </a-layout-content>
     </a-layout>
+
+    <Modal ref="thisModal" :data="primaryModal"/>
   </a-layout>
 </template>
