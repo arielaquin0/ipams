@@ -79,4 +79,10 @@ class SessionRepository implements SessionRepositoryInterface
         return $sessionData;
     }
 
+    public function destroyByClientId($clientId): true
+    {
+        $cacheKey = RkeyHelper::getFormatKey(RkeyHelper::R_KEY_STRING_USER_SESSION, $clientId);
+        Redis::del($cacheKey);
+        return true;
+    }
 }

@@ -99,4 +99,9 @@ class AuthRepository implements AuthRepositoryInterface
 
         return $this->json(200, 'ok', $userInfo);
     }
+
+    public function logout($clientId): true
+    {
+        return $this->sessionRepository->destroyByClientId($clientId);
+    }
 }

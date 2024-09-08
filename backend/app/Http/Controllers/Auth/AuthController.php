@@ -40,4 +40,11 @@ class AuthController extends BaseController
 
         return response()->json(['msg' => $re['msg']], $re['code']);
     }
+
+    public function logout(): JsonResponse
+    {
+        $this->authRepository->logout($this->clientId);
+
+        return response()->json(['msg'  => 'ok']);
+    }
 }
