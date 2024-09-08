@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers\IpAddress;
 
+use App\Enums\AuditAction;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\IpAddress\IpAddressStoreRequest;
 use App\Http\Requests\IpAddress\IpAddressUpdateRequest;
 use App\Models\IpAddress;
+use App\Services\AuditTrailService;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -16,6 +18,7 @@ class IpAddressController extends BaseController
 
     public function __construct(
         private readonly IpAddress $ipAddressModel,
+        private readonly AuditTrailService $auditTrailService,
     ) {
         parent::__construct();
     }
@@ -37,6 +40,13 @@ class IpAddressController extends BaseController
 
         $result = $this->ipAddressModel->create($ipAddressData);
 
+        $this->auditTrailService->log(
+            $this->uid,
+            AuditAction::CREATE_IP_ADDRESS,
+            [],
+            $result->id,
+        );
+
         return response()->json($result);
     }
 
@@ -44,9 +54,25 @@ class IpAddressController extends BaseController
     {
         $ipAddressData = $request->validated();
 
+        $oldLabel = $ipAddress->label;
+
         $ipAddress->update($ipAddressData);
 
+        $this->auditTrailService->log(
+            $this->uid,
+            AuditAction::UPDATE_IP_ADDRESS,
+            ['old_label' => $oldLabel, 'new_label' => $ipAddressData['label']],
+            $ipAddress->id,
+        );
+
         return response()->json($ipAddress);
+    }
+
+    public function showAuditLog(IpAddress $ipAddress): JsonResponse
+    {
+        $auditLogs = $ipAddress->auditTrails()->where('action', AuditAction::UPDATE_IP_ADDRESS)->get();
+
+        return response()->json($auditLogs);
     }
 
 }

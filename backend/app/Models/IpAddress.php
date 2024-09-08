@@ -10,6 +10,11 @@ class IpAddress extends BaseModel
 {
     use HasFactory;
 
+    public function auditTrails(): HasMany
+    {
+        return $this->hasMany(AuditTrail::class);
+    }
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);

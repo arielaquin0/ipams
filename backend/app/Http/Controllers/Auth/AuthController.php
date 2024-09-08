@@ -2,13 +2,17 @@
 
 namespace App\Http\Controllers\Auth;
 
+use App\Enums\AuditAction;
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\AuditTrailService;
 use Illuminate\Http\JsonResponse;
 
 class AuthController extends BaseController
 {
-    public function __construct() {
+    public function __construct(
+        private readonly AuditTrailService $auditTrailService,
+    ) {
         parent::__construct();
     }
 
@@ -30,6 +34,12 @@ class AuthController extends BaseController
             $result = array(
                 'token' => $userInfo['token'],
                 'uid'   => $userInfo['id'],
+            );
+
+            $this->auditTrailService->log(
+                $result['uid'],
+                AuditAction::LOGIN,
+                ['ip' => long2ip($this->clientIp)],
             );
 
             return response()->json([
