@@ -1,11 +1,17 @@
 <script setup>
+import { useUserStore } from "@/stores/user";
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const boxStyle = {
   width: '100%',
   height: '65px',
 };
 
 const logOut = () => {
-
+ useUserStore().logout().then(() => {
+    router.push(`/login?redirect=/`)
+  })
 }
 </script>
 
