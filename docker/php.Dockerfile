@@ -8,6 +8,8 @@ RUN mkdir -p /var/www/html
 
 ADD ./backend/ /var/www/html
 
+RUN cp /var/www/html/.env.example /var/www/html/.env
+
 RUN docker-php-ext-install pdo pdo_mysql
 
 RUN mkdir -p /usr/src/php/ext/redis \
