@@ -23,6 +23,22 @@ class BaseModel extends Model
         return $this;
     }
 
+    public function update(array $attributes = [], array $options = []): bool
+    {
+        if (empty($attributes)) {
+            return false;
+        }
+
+        if (!$this->exists) {
+            return false;
+        }
+
+        $this->fillable(array_keys($attributes));
+        $this->fill($attributes);
+
+        return $this->save($options);
+    }
+
     public function findRow(array $where = [], array $field = ['*']): array|self
     {
         $query = $this->query();

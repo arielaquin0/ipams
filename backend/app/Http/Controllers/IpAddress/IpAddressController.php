@@ -4,6 +4,7 @@ namespace App\Http\Controllers\IpAddress;
 
 use App\Http\Controllers\BaseController;
 use App\Http\Requests\IpAddress\IpAddressStoreRequest;
+use App\Http\Requests\IpAddress\IpAddressUpdateRequest;
 use App\Models\IpAddress;
 use App\Traits\ResponseTrait;
 use Illuminate\Http\JsonResponse;
@@ -37,6 +38,15 @@ class IpAddressController extends BaseController
         $result = $this->ipAddressModel->create($ipAddressData);
 
         return response()->json($result);
+    }
+
+    public function update(IpAddressUpdateRequest $request, IpAddress $ipAddress): JsonResponse
+    {
+        $ipAddressData = $request->validated();
+
+        $ipAddress->update($ipAddressData);
+
+        return response()->json($ipAddress);
     }
 
 }
