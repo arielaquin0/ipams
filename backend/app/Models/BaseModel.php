@@ -40,6 +40,23 @@ class BaseModel extends Model
         return $model;
     }
 
+    public function paginateRows(
+        int $page = 1,
+        int $perPage = 15,
+        array $where = [],
+        array $field = ['*'],
+        array $orderBy = ['column' => 'id', 'direction' => 'desc']
+    ): LengthAwarePaginator {
+        $query = $this->query();
+
+        if (!empty($where)) {
+            $query = $query->where($where);
+        }
+
+        $query = $query->orderBy($orderBy['column'], $orderBy['direction']);
+
+        return $query->paginate($perPage, $field, 'page', $page);
+    }
 
     public function findRowById(int $id, array $field = ['*']): array|self
     {
