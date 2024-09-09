@@ -34,3 +34,7 @@ To set up the project, follow these steps:
 3. **Access the Application**
     ```bash
    http://localhost:3000
+
+4. **Run Tests**
+    ```bash
+   ./run-tests.sh
