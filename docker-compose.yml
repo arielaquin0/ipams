@@ -20,6 +20,8 @@ services:
     build:
       context: .
       dockerfile: ./docker/php.Dockerfile
+    depends_on:
+      - redis
     container_name: backend
     volumes:
       - ./backend:/var/www/html

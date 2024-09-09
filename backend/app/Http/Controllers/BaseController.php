@@ -13,7 +13,7 @@ class BaseController extends Controller
 {
     protected int $clientIp = 0;
     protected string $clientId = "";
-    protected int $uid = 0;
+    public int $uid = 0;
     protected object $userInfo;
     protected string $path = '';
     protected array $noAuthList = array(
